@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const monngose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
+const productSchema = new monngose.Schema({
   name: {
     type: String,
     required: true,
@@ -21,17 +21,17 @@ const productSchema = new mongoose.Schema({
     type: String,
   },
   colorId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: monngose.Schema.Types.ObjectId,
     ref: "productColor",
   },
   sizeId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: monngose.Schema.Types.ObjectId,
     ref: "productSize",
   },
   categoryId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: monngose.Schema.Types.ObjectId,
     ref: "productCategory",
   },
 });
 
-module.exports = mongoose.model("products", productSchema);
+module.exports = monngose.model("products", productSchema);

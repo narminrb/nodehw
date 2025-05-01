@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 const connectDb = require('./db/Connect')
 require("dotenv").config();
 const todoRouter = require("./routers/todoRouter")
@@ -8,6 +9,9 @@ const productColorRouter = require("./routers/products/productColorRouter")
 const productCategoryRouter = require("./routers/products/productCategoryRouter")
 const productSizeRouter = require("./routers/products/productSizeRouter")
 const productController = require("./routers/products/productRouter")
+const imageController = require("./routers/products/imageRouter")
+const AuthRouter = require("./routers/AuthRouter")
+const BasketRouter = require("./routers/BasketRouter");
 const PORT = process.env.PORT || 5000;
 
 const app = express();
@@ -19,6 +23,7 @@ app.use(
 );
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 connectDb()
 
@@ -28,6 +33,10 @@ app.use('/api/products', productColorRouter)
 app.use('/api/products', productCategoryRouter)
 app.use('/api/products', productSizeRouter)
 app.use('/api/products', productController);
+app.use('/api/image', imageController);
+app.use('/api/auth', AuthRouter);
+app.use("/api/basket", BasketRouter);
+
 
 app.post("/example", (req, res) => {
   const { name } = req.body;

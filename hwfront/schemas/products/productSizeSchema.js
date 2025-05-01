@@ -1,17 +1,15 @@
-const mongoose = require("mongoose")
+const monngose = require("mongoose");
 
-const productSizeSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        unique:true
-    },
-     product:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"product"
-        }
-})
+const productSizeSchema = new monngose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  product: {
+    type: monngose.Schema.Types.ObjectId,
+    ref: "product",
+  },
+});
 
-// export const productSizeModel = mongoose.model("productSize", productSizeSchema)
-
-module.exports = mongoose.model("productSize",productSizeSchema)
+module.exports = monngose.model("productSize", productSizeSchema);

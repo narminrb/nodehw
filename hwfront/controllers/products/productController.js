@@ -6,23 +6,33 @@ const productSchema = require("../../schemas/products/productschema")
 
 const getProductController = async (req, res) => {
   const q = req.query.q || "";
-  const page = req.query.page || 1;
-  const limit = req.query.limit || 10;
-  const skip = (page - 1) * limit || 0;
-  const CategoryId = req.query.categoryId || "";
-  const SizeId = req.query.sizeId || "";
-  const ColorId = req.query.colorId || "";
+  let page = req.query.page || 1;
+  let limit = req.query.limit || 10;
+
 
   const query = { $or: [{ name: { $regex: q, $options: "i" } }] };
+  
+  let skip = (page - 1) * limit || 0;
   try {
     const products = await productSchema
       .find(query)
+      .limit(limit)
+      .skip(skip)
+      .populate("categoryId", "name")
+      .populate("colorId", "name")
+      .populate("sizeId", "name")
+
       .populate("categoryId")
       .populate("sizeId")
       .populate("colorId");
 
+      
+
     res.status(200).json({
       data: products,
+      total: Math.ceil(products.length / limit),
+      page:page,
+      limit:limit,
       message: "Products fetched successfully",
     });
   } catch (error) {
@@ -82,7 +92,6 @@ const getProductController = async (req, res) => {
 const createProductController = async (req, res) => {
     const {
       name,
-      code,
       count,
       description,
       imageUrl,
@@ -112,7 +121,6 @@ const createProductController = async (req, res) => {
       // Create the new product instance
       const newProduct = new productSchema({
         name,
-        code,
         count,
         description,
         imageUrl,
